@@ -57,7 +57,8 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/MonthlyCalendar`, // or '/calendar'
+        // redirectTo: `${window.location.origin}/MonthlyCalendar`, // or '/calendar'
+        redirectTo: `${window.location.origin}/#//MonthlyCalendar`
       },
     });
     if (error) throw error;

@@ -68,12 +68,34 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
     });
   }
 
-  async function handleGoogleSignIn() {
+  // async function handleGoogleSignIn() {
+  //   setError(null);
+  //   setLoading(true);
+  //   try {
+  //     const { error } = await supabase.auth.signInWithOAuth({
+  //       provider: "google",
+  //     });
+
+  //     if (error) {
+  //       setError(error.message);
+  //     }
+  //   } catch (err) {
+  //     setError(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+
+
+   async function handleGoogleSignIn() {
     setError(null);
     setLoading(true);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/#//MonthlyCalendar`, // <-- FIXED redirectTo URL
+        },
       });
 
       if (error) {
@@ -85,6 +107,7 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
       setLoading(false);
     }
   }
+
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
