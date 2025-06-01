@@ -64,7 +64,7 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
         provider: "google",
         options: {
           // redirectTo: `${window.location.origin}/#/auth/callback`,
-          redirectTo: 'https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback',
+          redirectTo: 'https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback'
         },
       });
       if (error) throw error;
