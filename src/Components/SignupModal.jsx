@@ -34,9 +34,12 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        // options: {
+        //   emailRedirectTo: window.location.origin + "/V5-FINAL-WEBDEV/#/auth/callback",
+        // },
         options: {
-          emailRedirectTo: window.location.origin + "/V5-FINAL-WEBDEV/#/auth/callback",
-        },
+  emailRedirectTo: "https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback"
+}
       });
 
       if (error) {
