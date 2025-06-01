@@ -11,17 +11,18 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
     setLoading(true);
+    setSuccess(false);
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords don't match");
       setLoading(false);
-
       return;
     }
 
@@ -48,7 +49,10 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
         return;
       }
       console.log("Signed up successfully:", data);
-      onClose(); // Close modal on successful signup
+      setSuccess(true);
+      setTimeout(() => {
+        onClose(); // Close modal after showing success message
+      }, 3000);
     } catch (error) {
       console.error("Error signing up:", error.message);
       setError(error.message);
@@ -120,6 +124,11 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
         {error && (
           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
             {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
+            Please check your email for a confirmation link to complete your registration!
           </div>
         )}
         <form className="space-y-6" onSubmit={handleSubmit}>
