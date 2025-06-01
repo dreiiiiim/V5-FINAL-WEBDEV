@@ -50,41 +50,57 @@ const AuthRedirect = () => {
 
     const handleAuth = async () => {
       try {
-        // Get the hash parameters from the URL
+        // Wait for the session to be detected from URL
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error("Session error:", sessionError);
+          setChecking(false);
+          return;
+        }
+
+        if (session) {
+          console.log("✅ Found session:", session);
+          navigate("/#/MonthlyCalendar", { replace: true });
+          return;
+        }
+
+        // If no session found, check URL for tokens
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const accessToken = hashParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token');
 
-        if (accessToken) {
-          // Set the session manually if we have tokens
-          const { data: { session }, error } = await supabase.auth.setSession({
+        if (accessToken && refreshToken) {
+          console.log("🔑 Found tokens in URL");
+          
+          // Try to set the session
+          const { data: { session: newSession }, error: setSessionError } = await supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken
           });
 
-          if (error) throw error;
-          if (session) {
-            console.log("✅ Session set successfully:", session);
+          if (setSessionError) {
+            console.error("Error setting session:", setSessionError);
+            setChecking(false);
+            return;
+          }
+
+          if (newSession) {
+            console.log("✅ Session set successfully");
             navigate("/#/MonthlyCalendar", { replace: true });
             return;
           }
         }
 
-        // Fallback to normal session check
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log("👀 Session check:", session);
-        
-        if (session) {
-          navigate("/#/MonthlyCalendar", { replace: true });
-        } else {
-          setChecking(false);
-        }
+        console.log("❌ No valid session found");
+        setChecking(false);
       } catch (error) {
-        console.error("❌ Auth error:", error);
+        console.error("❌ Unexpected error:", error);
         setChecking(false);
       }
     };
 
+    // Initial auth check
     handleAuth();
 
     // Listen for auth changes
