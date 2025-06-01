@@ -11,7 +11,7 @@ const App = () => {
         <Route path="/" element={<Welcomepage />} />
         {/* <Route path='/MonthlyCalendar' element={<MonthlyCalendar />} /> */}
         <Route path="/#/auth/callback" element={<AuthRedirect />} />
-        <Route path="/MonthlyCalendar" element={<MonthlyCalendar />} />
+        <Route path="/#/MonthlyCalendar" element={<MonthlyCalendar />} />
       </Routes>
     </div>
   );
