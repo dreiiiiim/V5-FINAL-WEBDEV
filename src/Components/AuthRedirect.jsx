@@ -129,14 +129,14 @@ const AuthRedirect = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("#/MonthlyCalendar", { replace: true });
+        navigate("/MonthlyCalendar", { replace: true });
       } else {
         navigate("/", { replace: true });
       }
     });
   }, [navigate]);
 
-  return <div className="text-center mt-10 text-xl">Redirecting...</div>;
+  return <div className="text-center mt-10 text-xl">Redirecting to your calendar...</div>;
 };
 
 export default AuthRedirect;
