@@ -27,13 +27,17 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
     }
 
     try {
+      // const { data, error } = await supabase.auth.signUp({
+      //   email: formData.email,
+      //   password: formData.password,
+      // });
       const { data, error } = await supabase.auth.signUp({
-  email: formData.email,
-  password: formData.password,
-  options: {
-    emailRedirectTo: window.location.origin + "/#/auth/callback"
-  }
-});
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: window.location.origin + "/V5-FINAL-WEBDEV/#/auth/callback",
+        },
+      });
 
       if (error) {
         // Check for already registered email
@@ -54,7 +58,9 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
       console.log("Signed up successfully:", data);
       setSuccess(true);
       console.log("Signed up successfully:", data);
-      alert("Please check your email for a confirmation link to complete your registration!");
+      alert(
+        "Please check your email for a confirmation link to complete your registration!"
+      );
       setTimeout(() => {
         onClose(); // Close modal after showing success message
       }, 3000);
@@ -95,15 +101,15 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
   //   }
   // }
 
-
-   async function handleGoogleSignIn() {
+  async function handleGoogleSignIn() {
     setError(null);
     setLoading(true);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: window.location.origin + "/V5-FINAL-WEBDEV/#/auth/callback",
+          redirectTo:
+            window.location.origin + "/V5-FINAL-WEBDEV/#/auth/callback",
         },
       });
       if (error) {
@@ -115,7 +121,6 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
       setLoading(false);
     }
   }
-
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
@@ -133,7 +138,8 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
         )}
         {success && (
           <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
-            Please check your email for a confirmation link to complete your registration!
+            Please check your email for a confirmation link to complete your
+            registration!
           </div>
         )}
         <form className="space-y-6" onSubmit={handleSubmit}>
