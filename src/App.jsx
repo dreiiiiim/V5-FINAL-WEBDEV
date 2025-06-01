@@ -5,14 +5,18 @@ import AuthRedirect from "./Components/AuthRedirect";
 import { Routes, Route } from "react-router-dom";
 
 const App = () => {
+  
   return (
-    <div className="h-screen w-screen">
+    <HashRouter>
+      <div className="h-screen w-screen">
       <Routes>
         <Route path="/" element={<Welcomepage />} />
-        <Route path="/auth/callback" element={<AuthRedirect />} />
         <Route path="/MonthlyCalendar" element={<MonthlyCalendar />} />
+        <Route path="/auth/callback" element={<AuthRedirect />} />
       </Routes>
     </div>
+  </HashRouter>
+    
   );
 };
 
