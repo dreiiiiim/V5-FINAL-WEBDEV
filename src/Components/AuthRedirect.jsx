@@ -52,7 +52,7 @@ const AuthRedirect = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       console.log("👀 Initial session check:", session);
       if (session) {
-        navigate("/MonthlyCalendar", { replace: true });
+        navigate("/#/MonthlyCalendar", { replace: true });
       } else {
         setChecking(false); // allow fallback
       }
@@ -64,7 +64,7 @@ const AuthRedirect = () => {
     } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("📡 Auth state change:", event, session);
       if (event === "SIGNED_IN" && session) {
-        navigate("/MonthlyCalendar", { replace: true });
+        navigate("/#/MonthlyCalendar", { replace: true });
       }
     });
 
