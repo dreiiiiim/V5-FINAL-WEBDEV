@@ -119,6 +119,29 @@
 // };
 
 // export default AuthRedirect;
+// import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { supabase } from "./client";
+
+// const AuthRedirect = () => {
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     supabase.auth.getSession().then(({ data: { session } }) => {
+//       if (session) {
+//        navigate("/MonthlyCalendar", { replace: true });
+//       } else {
+//        navigate("/MonthlyCalendar", { replace: true });
+//       }
+//     });
+//   }, [navigate]);
+
+//   return <div className="text-center mt-10 text-xl">Redirecting to your calendar...</div>;
+// };
+
+// export default AuthRedirect;
+
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "./client";
@@ -127,16 +150,32 @@ const AuthRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check for existing session on initial load
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-       navigate("/MonthlyCalendar", { replace: true });
+        navigate("/MonthlyCalendar", { replace: true });
       } else {
-       navigate("/MonthlyCalendar", { replace: true });
+        navigate("/", { replace: true }); // back to welcome if not signed in
       }
     });
+
+    // Listen for future auth events (e.g., just signed in)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) {
+        navigate("/MonthlyCalendar", { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, [navigate]);
 
-  return <div className="text-center mt-10 text-xl">Redirecting to your calendar...</div>;
+  return (
+    <div className="text-center mt-10 text-xl">
+      Redirecting to your calendar...
+    </div>
+  );
 };
 
 export default AuthRedirect;
