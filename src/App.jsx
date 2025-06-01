@@ -30,13 +30,13 @@ const App = () => (
 
 
   <div className="h-screen w-screen">
-    <HashRouter>
+    
     <Routes>
       <Route path="/" element={<Welcomepage />} />
       <Route path="/MonthlyCalendar" element={<MonthlyCalendar />} />
       <Route path="/auth/callback" element={<AuthRedirect />} />
     </Routes>
-  </HashRouter>
+  
   </div>
   
 );
