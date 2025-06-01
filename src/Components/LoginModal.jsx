@@ -1,129 +1,139 @@
 // LoginModal.jsx
 
-import React, { useState } from 'react';
-import { supabase } from './client';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { supabase } from "./client";
+import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ onClose, onSwitchToSignup }) => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); 
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-   });
-   
-   const [error, setError] = useState(null);
-   const [loading, setLoading] = useState(false);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
 
-   async function handleSubmit(e) {
-     e.preventDefault();
-     setError(null);
-     setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
 
-     try {
-       const { data, error } = await supabase.auth.signInWithPassword({
-         email: formData.email,
-         password: formData.password,
-       });
-
-       if (error) throw error;
-       console.log('Logged in successfully:', data);
-    navigate('/MonthlyCalendar'); 
-  } catch (error) {
-    console.error('Error logging in:', error.message);
-    setError(error.message);
-  } finally {
-    setLoading(false);
+      if (error) throw error;
+      console.log("Logged in successfully:", data);
+      navigate("/MonthlyCalendar");
+    } catch (error) {
+      console.error("Error logging in:", error.message);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
-   }
-   
-   function handleChange(event) {
-     const { name, value } = event.target;
-     setFormData((prevFormData) => {
-       const newFormData = {
-         ...prevFormData,
-         [name]: value
-       };
-       return newFormData;
-     });
-   }
 
-   async function handleGoogleSignIn() {
-  setError(null);
-  setLoading(true);
-  try {
-    // const { error } = await supabase.auth.signInWithOAuth({
-    //   provider: "google",
-    //   options: {
-    //     // redirectTo: `${window.location.origin}/MonthlyCalendar`, // or '/calendar'
-    //     redirectTo: `${window.location.origin}/#//MonthlyCalendar`
-    //   },
-    // });
-
-    const { error } = await supabase.auth.signInWithOAuth({
-  provider: "google",
-  options: {
-    redirectTo: `${window.location.origin}/auth/callback`
-  },
-});
-    if (error) throw error;
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => {
+      const newFormData = {
+        ...prevFormData,
+        [name]: value,
+      };
+      return newFormData;
+    });
   }
-}
 
-   return (
-     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-       <div className="bg-white p-12 rounded-lg shadow-lg w-full max-w-lg relative">
-         <div className="text-center mb-8">
-           <h1 className="text-4xl font-bold mb-4">MyCalendar</h1>
-           <p className="text-xl">Every Date Holds a Story. Start Telling Yours.</p>
-         </div>
-         {error && (
-           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
-             {error}
-           </div>
-         )}
-         <form className="space-y-6" onSubmit={handleSubmit}>
-           <div>
-             <label htmlFor="login-email" className="block text-xl mb-2 font-medium">Email Address</label>
-             <input
-               name="email" 
-               type="email"
-               id="login-email"
-               className="w-full p-4 border border-gray-300 rounded-lg text-lg"
-               placeholder="Enter your email"
-               required
-               onChange={handleChange}
-               value={formData.email}
-             />
-           </div>
-           <div>
-             <label htmlFor="login-password" className="block text-xl mb-2 font-medium">Password</label>
-             <input
-               name="password"
-               type="password"
-               id="login-password"
-               className="w-full p-4 border border-gray-300 rounded-lg text-lg"
-               placeholder="********"
-               required
-               onChange={handleChange}
-               value={formData.password}
-             />
-           </div>
-           <button
-             type="submit"
-             disabled={loading}
-             className="w-full bg-redcolor hover:bg-red-800 text-white py-4 px-4 rounded-lg text-xl font-medium transition-colors duration-300 disabled:opacity-50"
-           >
-             {loading ? 'Logging in...' : 'Login'}
-           </button>
+  async function handleGoogleSignIn() {
+    setError(null);
+    setLoading(true);
+    try {
+      // const { error } = await supabase.auth.signInWithOAuth({
+      //   provider: "google",
+      //   options: {
+      //     // redirectTo: `${window.location.origin}/MonthlyCalendar`, // or '/calendar'
+      //     redirectTo: `${window.location.origin}/#//MonthlyCalendar`
+      //   },
+      // });
 
-            <button
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/#/auth/callback`,
+        },
+      });
+      if (error) throw error;
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+      <div className="bg-white p-12 rounded-lg shadow-lg w-full max-w-lg relative">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-4">MyCalendar</h1>
+          <p className="text-xl">
+            Every Date Holds a Story. Start Telling Yours.
+          </p>
+        </div>
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <label
+              htmlFor="login-email"
+              className="block text-xl mb-2 font-medium"
+            >
+              Email Address
+            </label>
+            <input
+              name="email"
+              type="email"
+              id="login-email"
+              className="w-full p-4 border border-gray-300 rounded-lg text-lg"
+              placeholder="Enter your email"
+              required
+              onChange={handleChange}
+              value={formData.email}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="login-password"
+              className="block text-xl mb-2 font-medium"
+            >
+              Password
+            </label>
+            <input
+              name="password"
+              type="password"
+              id="login-password"
+              className="w-full p-4 border border-gray-300 rounded-lg text-lg"
+              placeholder="********"
+              required
+              onChange={handleChange}
+              value={formData.password}
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-redcolor hover:bg-red-800 text-white py-4 px-4 rounded-lg text-xl font-medium transition-colors duration-300 disabled:opacity-50"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
+          <button
             type="button"
             onClick={handleGoogleSignIn}
             className="flex items-center justify-center gap-3 w-full mt-4 border border-gray-300 bg-white hover:bg-gray-100 text-black py-4 px-4 rounded-lg text-xl font-medium transition-colors duration-300"
@@ -152,27 +162,27 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
             </svg>
             Sign in with Google
           </button>
-         </form>
-         <div className="mt-6 text-center">
-           <p className="text-lg">
-             Don't have an account?{' '}
-             <button 
-               onClick={onSwitchToSignup} 
-               className="text-redcolor hover:underline"
-             >
-               Sign up
-             </button>
-           </p>
-         </div>
-         <button
-           onClick={onClose}
-           className="text-gray-600 hover:text-gray-800 text-lg absolute top-4 right-4"
-         >
-           ✕
-         </button>
-       </div>
-     </div>
-   );
+        </form>
+        <div className="mt-6 text-center">
+          <p className="text-lg">
+            Don't have an account?{" "}
+            <button
+              onClick={onSwitchToSignup}
+              className="text-redcolor hover:underline"
+            >
+              Sign up
+            </button>
+          </p>
+        </div>
+        <button
+          onClick={onClose}
+          className="text-gray-600 hover:text-gray-800 text-lg absolute top-4 right-4"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default LoginModal;
