@@ -94,7 +94,8 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
       const { error } = await supabase.auth.signInWithOAuth({
               provider: "google",
               options: {
-                redirectTo: `${window.location.origin}/#/auth/callback`,
+                // redirectTo: `${window.location.origin}/#/auth/callback`,
+                redirectTo: 'https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback',
               },
             });
       if (error) {
