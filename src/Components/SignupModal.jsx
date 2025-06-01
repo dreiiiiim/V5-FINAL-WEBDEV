@@ -50,6 +50,8 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
       }
       console.log("Signed up successfully:", data);
       setSuccess(true);
+      console.log("Signed up successfully:", data);
+      alert("Please check your email for a confirmation link to complete your registration!");
       setTimeout(() => {
         onClose(); // Close modal after showing success message
       }, 3000);
