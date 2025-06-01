@@ -28,7 +28,7 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
 
       if (error) throw error;
       console.log("Logged in successfully:", data);
-      navigate("/#/MonthlyCalendar");
+      navigate("/MonthlyCalendar", { replace: true });
     } catch (error) {
       console.error("Error logging in:", error.message);
       setError(error.message);
@@ -48,6 +48,8 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
     });
   }
 
+  
+
   async function handleGoogleSignIn() {
     setError(null);
     setLoading(true);
@@ -61,12 +63,11 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
       // });
 
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: "https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback",
-
-        },
-      });
+  provider: "google",
+  options: {
+    redirectTo: "https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback",
+  },
+});
       if (error) throw error;
     } catch (err) {
       setError(err.message);
