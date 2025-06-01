@@ -2,7 +2,7 @@ import React from "react";
 import MonthlyCalendar from "./Components/MonthlyCalendar";
 import Welcomepage from "./Components/Welcomepage";
 import AuthRedirect from "./Components/AuthRedirect";
-import { Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
   
