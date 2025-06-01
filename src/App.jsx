@@ -21,7 +21,7 @@
 // };
 
 // export default App;
-import { HashRouter, Routes, Route } from "react-router-dom";
+import {  Routes, Route } from "react-router-dom";
 import MonthlyCalendar from "./Components/MonthlyCalendar";
 import Welcomepage from "./Components/Welcomepage";
 import AuthRedirect from "./Components/AuthRedirect";
