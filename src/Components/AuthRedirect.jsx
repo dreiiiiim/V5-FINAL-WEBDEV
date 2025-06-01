@@ -61,7 +61,8 @@ const AuthRedirect = () => {
 
         if (session) {
           console.log("✅ Found session:", session);
-          navigate("/#/MonthlyCalendar", { replace: true });
+          // navigate("/#/MonthlyCalendar", { replace: true });
+          navigate("/MonthlyCalendar", { replace: true });
           return;
         }
 
