@@ -28,7 +28,7 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
 
       if (error) throw error;
       console.log("Logged in successfully:", data);
-      navigate("/MonthlyCalendar");
+      navigate("/#/MonthlyCalendar");
     } catch (error) {
       console.error("Error logging in:", error.message);
       setError(error.message);
@@ -63,7 +63,7 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/V5-FINAL-WEBDEV/#/auth/callback`,
         },
       });
       if (error) throw error;
