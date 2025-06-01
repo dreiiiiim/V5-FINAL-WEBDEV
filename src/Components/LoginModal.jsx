@@ -74,6 +74,8 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
     } finally {
       setLoading(false);
     }
+
+    
   }
 
   return (
