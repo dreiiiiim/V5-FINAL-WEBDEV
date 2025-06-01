@@ -81,47 +81,44 @@
 
 
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "./client";
 
 const AuthRedirect = () => {
-  const navigate = useNavigate();
-
   useEffect(() => {
     let redirected = false;
 
-    // 1. First try: Check session immediately
+    // Try to get session immediately
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("/MonthlyCalendar", { replace: true });
+        window.location.hash = "#/MonthlyCalendar";
         redirected = true;
       }
     });
 
-    // 2. Listen for SIGNED_IN event
+    // Listen for SIGNED_IN event just in case it's late
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session && !redirected) {
-        navigate("/MonthlyCalendar", { replace: true });
+        window.location.hash = "#/MonthlyCalendar";
         redirected = true;
       }
     });
 
-    // 3. Fallback: Try again after short delay in case Supabase is slow to restore
+    // Fallback: check again after short delay
     setTimeout(async () => {
       if (!redirected) {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
           window.location.hash = "#/MonthlyCalendar";
         } else {
-          navigate("/", { replace: true }); // Fallback to homepage if still no session
+          window.location.hash = "#/";
         }
       }
-    }, 1000); // Adjust delay if needed
+    }, 1000); // 1 second delay
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, []);
 
-  return null;
+  return <div className="text-center mt-10 text-xl">Redirecting to your calendar...</div>;
 };
 
 export default AuthRedirect;
