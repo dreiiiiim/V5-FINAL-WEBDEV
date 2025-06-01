@@ -111,7 +111,7 @@ const AuthRedirect = () => {
       if (!redirected) {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          navigate("/MonthlyCalendar", { replace: true });
+          window.location.hash = "#/MonthlyCalendar";
         } else {
           navigate("/", { replace: true }); // Fallback to homepage if still no session
         }
