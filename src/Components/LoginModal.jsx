@@ -65,7 +65,8 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
       const { error } = await supabase.auth.signInWithOAuth({
   provider: "google",
   options: {
-    redirectTo: "https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback",
+    // redirectTo: "https://dreiiiiim.github.io/V5-FINAL-WEBDEV/#/auth/callback",
+    redirectTo: `${window.location.origin}/#/MonthlyCalendar`
   },
 });
       if (error) throw error;
