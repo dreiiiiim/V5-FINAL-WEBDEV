@@ -28,9 +28,12 @@ const SignupModal = ({ onClose, onSwitchToLogin }) => {
 
     try {
       const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-      });
+  email: formData.email,
+  password: formData.password,
+  options: {
+    emailRedirectTo: window.location.origin + "/#/auth/callback"
+  }
+});
 
       if (error) {
         // Check for already registered email
