@@ -129,7 +129,7 @@ const AuthRedirect = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate("/MonthlyCalendar", { replace: true });
+        navigate("#/MonthlyCalendar", { replace: true });
       } else {
         navigate("/", { replace: true });
       }
