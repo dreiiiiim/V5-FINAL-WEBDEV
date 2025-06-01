@@ -80,32 +80,29 @@
 // export default AuthRedirect;
 
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { supabase } from "./client";
 
 const AuthRedirect = () => {
-  useEffect(() => {
-    let redirected = false;
+  const redirected = useRef(false);
 
-    // Try to get session immediately
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         window.location.hash = "#/MonthlyCalendar";
-        redirected = true;
+        redirected.current = true;
       }
     });
 
-    // Listen for SIGNED_IN event just in case it's late
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session && !redirected) {
+      if (event === "SIGNED_IN" && session && !redirected.current) {
         window.location.hash = "#/MonthlyCalendar";
-        redirected = true;
+        redirected.current = true;
       }
     });
 
-    // Fallback: check again after short delay
     setTimeout(async () => {
-      if (!redirected) {
+      if (!redirected.current) {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
           window.location.hash = "#/MonthlyCalendar";
@@ -113,7 +110,7 @@ const AuthRedirect = () => {
           window.location.hash = "#/";
         }
       }
-    }, 1000); // 1 second delay
+    }, 1000);
 
     return () => subscription.unsubscribe();
   }, []);
