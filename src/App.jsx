@@ -10,7 +10,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Welcomepage />} />
         {/* <Route path='/MonthlyCalendar' element={<MonthlyCalendar />} /> */}
-        <Route path='/MonthlyCalendar' element={<AuthRedirect /> } />
+        <Route path="/auth/callback" element={<AuthRedirect />} />
+<Route path="/MonthlyCalendar" element={<MonthlyCalendar />} />
       </Routes>
 
   

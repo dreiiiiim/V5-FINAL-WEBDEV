@@ -54,13 +54,20 @@ const LoginModal = ({ onClose, onSwitchToSignup }) => {
   setError(null);
   setLoading(true);
   try {
+    // const { error } = await supabase.auth.signInWithOAuth({
+    //   provider: "google",
+    //   options: {
+    //     // redirectTo: `${window.location.origin}/MonthlyCalendar`, // or '/calendar'
+    //     redirectTo: `${window.location.origin}/#//MonthlyCalendar`
+    //   },
+    // });
+
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        // redirectTo: `${window.location.origin}/MonthlyCalendar`, // or '/calendar'
-        redirectTo: `${window.location.origin}/#//MonthlyCalendar`
-      },
-    });
+  provider: "google",
+  options: {
+    redirectTo: `${window.location.origin}/auth/callback`
+  },
+});
     if (error) throw error;
   } catch (err) {
     setError(err.message);
